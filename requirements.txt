@@ -1,6 +1,5 @@
 pandas
 numpy
-sklearn
+scikit-learn
 streamlit
 requests
-sklearn.ensemble
