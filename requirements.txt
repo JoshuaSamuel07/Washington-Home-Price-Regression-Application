@@ -1,0 +1,6 @@
+pandas
+numpy
+sklearn
+streamlit
+requests
+sklearn.ensemble
