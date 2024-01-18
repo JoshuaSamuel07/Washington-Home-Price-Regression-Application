@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 import pickle
 import streamlit as st
@@ -9,13 +8,8 @@ import os
 from io import BytesIO
 
 
-def set_bg_hack_url():
-    '''
-    A function to unpack an image from url and set as bg.
-    Returns
-    -------
-    The background.
-    '''
+def page_one_bk():
+    
         
     st.markdown(
          f"""
@@ -30,13 +24,8 @@ def set_bg_hack_url():
          unsafe_allow_html=True
      )
 
-def set_mainbg_hack_url():
-    '''
-    A function to unpack an image from url and set as bg.
-    Returns
-    -------
-    The background.
-    '''
+def page_two_bk():
+    
         
     st.markdown(
          f"""
@@ -44,8 +33,6 @@ def set_mainbg_hack_url():
          .stApp {{
             
              background: url(" https://raw.githubusercontent.com/JoshuaSamuel07/Washington-Home-Price/main/image2.jpg");
-            
-            
              background-size: cover
          }}
          </style>
@@ -54,7 +41,7 @@ def set_mainbg_hack_url():
      )
 
 # Function to load the model using pickle from GitHub
-def load_model(url=url = r"https://raw.githubusercontent.com/JoshuaSamuel07/Washington-Home-Price/main/RandomFor_predict.pkl"):
+def load_model(url= r"https://raw.githubusercontent.com/JoshuaSamuel07/Washington-Home-Price/main/RandomFor_predict.pkl"):
     #r"https://github.com/JoshuaSamuel07/Washington-Home-Price/blob/main/RandomFor_predict.pkl"
     response = requests.get(url)
     if response.status_code == 200:
@@ -63,64 +50,74 @@ def load_model(url=url = r"https://raw.githubusercontent.com/JoshuaSamuel07/Wash
         #model = pickle.load(BytesIO(response.content))
         return model
     else:
-        st.error(f"Failed to load the model. Status code: {response.status_code}")
+        st.error(f"Failed. Status code: {response.status_code}")
         return None
     
 # Function to load the model using pickle
 def load_model1(filename="RandomFor_predict.pkl"):
-    # current_directory = os.path.dirname(__file__)
-    # filename = os.path.join(current_directory, filename)
 
     filename = 'https://raw.githubusercontent.com/JoshuaSamuel07/Washington-Home-Price/main/RandomFor_predict.pkl'
-    #'C:\Users\joshu\Desktop\GCU\DSC-580\project\lrprice.pkl'
+    #'C:\Users\joshu\Desktop\GCU\DSC-580\project\RandomFor_predict.pkl'
     with open(filename, "rb") as file:
         model = pickle.load(file)
     return model
 
-def perform_regression(city, bedrooms, bathrooms, sqft_living, floors):
+def random_predict_model(city, bedrooms, bathrooms, sqft_living, floors):
     # current_directory = os.path.dirname(__file__)
-    # file_path = os.path.join(current_directory, "XHome_Price_data.csv")
-    # X = pd.read_csv(file_path)
-    url = 'https://raw.githubusercontent.com/JoshuaSamuel07/Washington-Home-Price/main/Home_Price_data.csv'
+    # file_path = os.path.join(current_directory, "Home_price_final.csv")
+    # Home_price_final = pd.read_csv(file_path)
+    url = 'https://raw.githubusercontent.com/JoshuaSamuel07/Washington-Home-Price/main/Home_price_final.csv'
     X = pd.read_csv(url)
     model = load_model()
     loc_index = np.where(X.columns == city)[0][0]
     x = np.zeros(len(X.columns))
-    x[0] = bedrooms
-    x[1] = bathrooms
-    x[2] = sqft_living
-    x[3] = floors
+    x[1] = bedrooms
+    x[2] = bathrooms
+    x[3] = sqft_living
+    x[4] = floors
     if loc_index >= 0:
         x[loc_index] = 1
     return model.predict([x])[0]
  
 # Streamlit app
-def intro_page():
-    # Applying background image for the introduction page
-    set_bg_hack_url()
+def menu_page():
+    #background image for the menu_page page 
+    page_one_bk()
     
+    st.markdown(
+    '<h1 style="color: black; white-space: nowrap;">Washington Home Price Prediction Application</h1>',
+    unsafe_allow_html=True
+)
+    st.markdown(
+    '<p style="color: black;">This project aims at helping its users select certain parameters that will help them get a potential prediction from a model that will predict a price of a home in Washington</p>',
+    unsafe_allow_html=True
+)
+    st.markdown(
+    '<p style="color: white;">Created By: Joshua Samuel</p>',
+    unsafe_allow_html=True
+)
+    #st.title("Washington Home Price Prediction Application", unsafe_allow_html=True, style={"color": "white"})
+    #st.write("This project aims at helping it's users select certain parameters that will help them get a potential prediction from a model that will predict a price of a home in Washington", unsafe_allow_html=True, style={"color": "white"})
 
-    st.title("Washington Home Price Prediction Application")
-    st.write("Home Price Prediction")
+def predict_model():
+    #background image for the predict_model page
+    page_two_bk()
 
-def regression_page():
-    # Applying background image for the regression page
-    set_mainbg_hack_url()
+    st.markdown('<h1 style="color: black; white-space: nowrap;">Washington Home Price Prediction Application</h1>',unsafe_allow_html=True)
+    #st.title("Washington Home Price Prediction Application")
 
-     
-    st.title("Washington Home Price Prediction Application")
+    #making the buttons center
 
-    # Using columns with adjusted width
-    row_input = st.columns((2, 1, 2, 1))
+    row_input = st.columns((2, 2, 2, 1))
 
-    # username input at column 1
+    #city input at column 1
     with row_input[0]:
-        # username input with adjusted width
-        param1 = st.text_input('City', value="Bothell")    
-        param2 = st.text_input("Bedroom Count", value="4.0")
-        param3 = st.text_input("Bathroom Count", value="2.0")
-        param4 = st.text_input("Total SquareFeet", value="1050.0")
-        param5 = st.text_input("Floor Count", value="2.0")
+        #city input with adjusted width
+        param1 = st.text_input('City', value="Bothell", placeholder= 'Enter city')    
+        param2 = st.text_input("Bedroom Count", value="5.0", placeholder= 'Enter Bedroom')
+        param3 = st.text_input("Bathroom Count", value="3.5", placeholder= 'Enter Bathroom')
+        param4 = st.text_input("Square Feet Living", value="4500.0", placeholder= 'Enter Square Feet')
+        param5 = st.text_input("Floor Count", value="2.0", placeholder= 'Enter Floor')
     
     # Convert input values to float
     param1 = param1
@@ -129,25 +126,34 @@ def regression_page():
     param4 = float(param4)
     param5 = float(param5)
 
+    
+
     # Button to trigger regression model
+    button_html = (
+    f'<style>'
+    f'.custom-button {{ background-color: green; color: black; }}'
+    f'</style>'
+    f'<button class="custom-button">Predict Price</button>'
+)
     if st.button("Predict Price"):
         # Perform regression and get the result
-        result = perform_regression(param1, param2, param3, param4, param5)
+        result = random_predict_model(param1, param2, param3, param4, param5)
 
         # Display the result
-        # st.success(f"Regression Result: {np.round(result)}")
+        # st.success(f"Predicted value of the home: {np.round(result)}")
+        formatted_result = '{:,.0f}'.format(np.round(result))
         st.markdown(
-            f'<p style="color: white;">Regression Result: {np.round(result)}</p>',
+            f'<p style="color: white;">Predicted value of the home: ${formatted_result}</p>',
             unsafe_allow_html=True
         )
 
 def main():
-    page = st.sidebar.selectbox("Select Page", ["Main Menu", "Price Prediction"])
+    page = st.sidebar.selectbox("Content", ["Main Menu", "Price Prediction"])
 
     if page == "Main Menu":
-        intro_page()
+        menu_page()
     elif page == "Price Prediction":
-        regression_page()
+        predict_model()
 
 if __name__ == "__main__":
     main()
