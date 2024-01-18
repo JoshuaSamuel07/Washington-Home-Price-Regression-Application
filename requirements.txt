@@ -1,6 +1,0 @@
-pandas
-numpy
-scikit-learn
-streamlit
-requests
-SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
