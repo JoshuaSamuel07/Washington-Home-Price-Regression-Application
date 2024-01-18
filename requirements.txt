@@ -1,5 +1,6 @@
 pandas
 numpy
-sklearn
+pip install scikit-learn
+scikit-learn
 streamlit
 requests
