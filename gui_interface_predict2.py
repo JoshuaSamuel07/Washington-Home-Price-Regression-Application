@@ -122,7 +122,7 @@ def predict_model():
     
     page_two_bk()
 
-    st.markdown('<h1 style="color: black; white-space: nowrap;">Washington Home Price Prediction Application</h1>',unsafe_allow_html=True)
+    st.markdown('<h1 style="color: black; white-space: nowrap;">Washington State Home Price Prediction Application</h1>',unsafe_allow_html=True)
 
     row_input = st.columns((2, 2, 2, 1))
 
