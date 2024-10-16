@@ -1,4 +1,3 @@
-
 # Washington Home Price Prediction Application
 
 
